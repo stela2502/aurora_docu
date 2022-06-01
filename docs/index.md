@@ -34,13 +34,51 @@ R and python packages are updating rather frequently and updated packages on the
 and on the other hand do create a problem if every user installes them in a private directory.
 
 [Singularity images](https://sylabs.io/guides/3.6/user-guide/quick_start.html) are the way to go.
-Singularity version 3.6 is installed on aurora-ls2. If you have an immediate need for a package you might think about starting your own singularity image and upload it to aurora-ls2. But before you do this check out the folder "/projects/fs1/common/singularityImages/" it might already contain an image that contains the software you are looking for.
+Singularity version 3.6 is installed on aurora-ls2. If you have an immediate need for a package you might think about starting your own singularity image and upload it to aurora-ls2. But before you do this check out the folder "/projects/fs1/common/singularityImages/" there might already exist an image that contains the software you are looking for.
 
 I recommend reading [this pdf](pdfs/HowToUseSingularityOnLsens2.pdf) about how to use singularity images and especially how to use my SingSingCell image.  
 
 ## Scripts
 
 This is a VERY broad field. In general all Bash scripts should be [SLURM scripts](https://lunarc-documentation.readthedocs.io/en/latest/batch_system/) on aurora-ls2 to make them run on the calculation nodes. I assume most slurm scripts would access some software installed on the aurora system. Software on this system, is handled using the module system - [please read up on it!](https://lunarc-documentation.readthedocs.io/en/latest/aurora_modules/).
+
+This is an extremely simple script that I use to start my singularity images on the node:
+```
+#! /bin/bash
+#SBATCH -n 5
+#SBATCH -N 1
+#SBATCH -t 24:00:00
+#SBATCH -A lsens2018-3-3
+#SBATCH -J SingSing
+#SBATCH -o SingSing.%j.out
+#SBATCH -e SingSing.%j.err
+module purge
+module load Singularity/default SingSingCell/1.3 
+exit 0
+```
+Let's look into that. All entries starting with '#' are bash comments and evaluated by the SLURM engine.
+I'll scan through the options I normally use: 
+
+1.[#SBATCH -n 5] is the amount of processors you want for this job.
+    I use this also to reserve a certain amount of memory for my software. Our nodes have 40 cores each and 376Gb of RAM.
+    By requesting 5 nodes I also hope to obtain a total of 376Gb * 5/40 = 47 Gb of RAM.
+
+2.[#SBATCH -N 1] denotes the amount of nodes you request - keep this at 1 all the time.
+
+3.[#SBATCH -t 24:00:00] kill this process after 24 h
+
+4.[#SBATCH -J] the name of your job
+
+5.[#SBATCH -o] the out file of your job (%j adds the job ID to this file)
+
+6.[#SBATCH -e] the error file of you job
+
+
+After this come the lines that load the SLURM modules you want to load.
+In this specific situation the singularity image is loaded and the Jupyter notebook is started.
+After the loading of the modules you would then add your Bash script and run your commands.
+
+Please finish up with a trailing "exit 0" as this likely helps the SLURM error detection system.
 
 Please be considerate to your co-workers. Our resources are limited and so is ls2, too. Try to use only as many resources as you actually need at a time. And think about what your software is able to do. Most of the available softwares do not benefit from more than 10 cores. And I know of not a single Bioinformatic program that can use two nodes at the same time.
 

@@ -87,7 +87,12 @@ Please finish up with a trailing "exit 0" as this likely helps the SLURM error d
 
 Please be considerate to your co-workers. Our resources are limited and so is ls2, too. Try to use only as many resources as you actually need at a time. And think about what your software is able to do. Most of the available softwares do not benefit from more than 10 cores. And I know of not a single Bioinformatic program that can use two nodes at the same time.
 
-Please also try to use the [nextflow pipelines](https://nf-co.re/) installed in "/projects/fs1/common/nextflow/". A minimal help on how to start these pipelines on aurora-ls2 can be obtained by looking at the test script for these pipelines "/home/stefanl/common/nextflow/test_all_blade.sh". This way you can see how the input files should be structured and how the pipelines are called. This was quite a lot of work to install them - [so please try to use them](pdfs/NextFlow_Pipelines_on_aurora_ls2.pdf) ;-).
+### Nextflow and NF-core
+
+Nextflow and the [NF-core modules](https://nf-co.re/) are an epic time saver for us bioinformaticians. They cover main bioinformatic issues like single cell mapping or ChIP analysis. And this to an extend and depth that I am normally not applying to my projects.
+This is a real step forward and I think we should all get to know the basics of that. Nextflow pipelines have a potential to rid us of all the bash scripting we have been used to. It even frees us from thinking about SLURM or the amount of processors we need for a given task. 
+
+Hence please try to use the nextflow pipelines installed in "/projects/fs1/common/nextflow/". A minimal help on how to start these pipelines on aurora-ls2 can be obtained by looking at the test script for these pipelines "/home/stefanl/common/nextflow/test_all_blade.sh". This way you can see how the input files should be structured and how the pipelines are called. This was quite a lot of work to install them - so please try to use them using [this guide](pdfs/NextFlow_Pipelines_on_aurora_ls2.pdf) ;-).
 
 
 ### R and Python scripts

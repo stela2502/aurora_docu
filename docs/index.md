@@ -1,0 +1,57 @@
+# Aurora documentation from Bioinformaticians for Bioinformaticians
+
+Please read this before you use the aurora-ls2 system!
+
+## Data - where to put data / scripts / results ?
+
+Backup is very expensive for us as we need to buy more hardware to back things up.
+Therefore we try to minimize the amount of data that needs to get backed up.
+
+What we think is necessary to be backed up is:
+
+1. Your raw data - this (and ONLY this) should go to /projects/fs5/\<username\>
+    Raw data are e.g. fastq files (gzipped!!) or raw read folders.
+
+2. Your scripts - this is where all your work time got invested!
+    They should be stored in your home directory as this is also updated.
+
+That is not much -right? So where will all the intermediate data files end up?
+
+Files that are reproducible (as your scripts do no random sampling or something like that) or even temporary should
+be put on a not backed up disk. Ideally you should save them on the calculation nodes in a folder on the node.
+The slurm system is set up to give you a tempoorary folder on the odes for each slurm job you start. The name of your temporary folder is stored in the $SNIC_TMP [environment variable](https://linuxize.com/post/how-to-set-and-list-environment-variables-in-linux/). This variable does not exist on the frontend. The folder on the node is private to you and will be deleted once the job is finished. So in the last step of your script you need to save your results.
+
+Even these results should not be backed up (if they can be reproduced - try it if you are unsure). Hence they should also be stored on a not backed up nas.
+
+I strongly recommend [to create soft links](https://www.cyberciti.biz/faq/creating-soft-link-or-symbolic-link/) to the main data folder that you use. I for example have the main data storage accessible under "\~/NAS/". 
+Do not overdo this! You need to know where all your data is as you are responsible - OK?
+
+
+## Make scripts reproducible
+
+The easiest way to achieve that is letting someone take care of your analysis software.
+R and python packages are updating rather frequently and updated packages on the one hand might change the results
+and on the other hand do create a problem if every user installes them in a private directory.
+
+[Singularity images](https://sylabs.io/guides/3.6/user-guide/quick_start.html) are the way to go.
+Singularity version 3.6 is installed on aurora-ls2. If you have an immediate need for a package you might think about starting your own singularity image and upload it to aurora-ls2. But before you do this check out the folder "/projects/fs1/common/singularityImages/" it might already contain an image that contains the software you are looking for.
+
+I recommend reading [this pdf](pdfs/HowToUseSingularityOnLsens2.pdf) about how to use singularity images and especially how to use my SingSingCell image.  
+
+## Scripts
+
+This is a VERY broad field. In general all Bash scripts should be [SLURM scripts](https://lunarc-documentation.readthedocs.io/en/latest/batch_system/) on aurora-ls2 to make them run on the calculation nodes. I assume most slurm scripts would access some software installed on the aurora system. Software on this system, is handled using the module system - [please read up on it!](https://lunarc-documentation.readthedocs.io/en/latest/aurora_modules/).
+
+Please be considerate to your co-workers. Our resources are limited and so is ls2, too. Try to use only as many resources as you actually need at a time. And think about what your software is able to do. Most of the available softwares do not benefit from more than 10 cores. And I know of not a single Bioinformatic program that can use two nodes at the same time.
+
+Please also try to use the [nextflow pipelines](https://nf-co.re/) installed in "/projects/fs1/common/nextflow/". A minimal help on how to start these pipelines on aurora-ls2 can be obtained by looking at the test script for these pipelines "/home/stefanl/common/nextflow/test_all_blade.sh". This way you can see how the input files should be structured and how the pipelines are called. This was quite a lot of work to install them - [so please try to use them](pdfs/NextFlow_Pipelines_on_aurora_ls2.pdf) ;-).
+
+
+### R and Python scripts
+
+R and Python are the languages most of the bioinformatic packages are implemented in. Therefore these scripts are different from the Bash/SLURM scripts, they contain a lot of analysis specififc settings and are therefore extremely valuable.
+In other words - BACK THEM UP ;-)
+
+I recommend to use the [Python notebooks](https://jupyter.org/) to interact with both R and Python. With aurora-ls2 being a secure no-internet system installing packages for both languages is a pain. Therfore I have focused on Singularity to package up the most used packages in both R and Python and provide them as [a Jupyter enabled singularity image called SingSingCell](pdfs/HowToUseSingularityOnLsens2.pdf).
+
+

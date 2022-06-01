@@ -24,6 +24,11 @@ The slurm system is set up to give you a tempoorary folder on the odes for each 
 Even these results should not be backed up (if they can be reproduced - try it if you are unsure). Hence they should also be stored on a not backed up nas.
 
 I strongly recommend [to create soft links](https://www.cyberciti.biz/faq/creating-soft-link-or-symbolic-link/) to the main data folder that you use. I for example have the main data storage accessible under "\~/NAS/". 
+```
+ln -s /projects/fs1/stefanl ~/NAS
+ln -s /projects/fs5/stefanl/ ~/DATA
+```
+This way you keep quite flexible in changing the NAS mount points in the future.
 Do not overdo this! You need to know where all your data is as you are responsible - OK?
 
 

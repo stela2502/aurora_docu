@@ -15,13 +15,15 @@ What we think is necessary to be backed up is:
 2. Your scripts - this is where all your work time got invested!
     They should be stored in your home directory as this is also updated.
 
-That is not much -right? So where will all the intermediate data files end up?
+That is not much - right? So where will all the intermediate data files end up?
 
 Files that are reproducible (as your scripts do no random sampling or something like that) or even temporary should
 be put on a not backed up disk. Ideally you should save them on the calculation nodes in a folder on the node.
 The slurm system is set up to give you a tempoorary folder on the odes for each slurm job you start. The name of your temporary folder is stored in the $SNIC_TMP [environment variable](https://linuxize.com/post/how-to-set-and-list-environment-variables-in-linux/). This variable does not exist on the frontend. The folder on the node is private to you and will be deleted once the job is finished. So in the last step of your script you need to save your results.
 
 Even these results should not be backed up (if they can be reproduced - try it if you are unsure). Hence they should also be stored on a not backed up nas.
+
+Having said that we currently have one main data storage that everyone should use as the main data storage for scripts, (intermediate) data and results: "projects/fs1/". Everybody has a "/projects/fs1/\<username\>" folder that one can use. The same is true for the data backup "/projects/fs5". This should only differ if you have been told otherwise.
 
 I strongly recommend [to create soft links](https://www.cyberciti.biz/faq/creating-soft-link-or-symbolic-link/) to the main data folder that you use. I for example have the main data storage accessible under "\~/NAS/". 
 ```

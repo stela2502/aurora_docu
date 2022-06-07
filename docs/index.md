@@ -63,7 +63,7 @@ module purge
 module load Singularity/default SingSingCell/1.3 
 exit 0
 ```
-Let's look into that. All entries starting with '#' are bash comments and evaluated by the SLURM engine.
+Let's look into that. All entries starting with '#SBATCH' are bash comments and evaluated by the SLURM engine.
 I'll scan through the options I normally use: 
 
 1.[#SBATCH -n 5] is the amount of processors you want for this job.
@@ -74,11 +74,13 @@ I'll scan through the options I normally use:
 
 3.[#SBATCH -t 24:00:00] kill this process after 24 h
 
-4.[#SBATCH -J] the name of your job
+4.[#SBATCH -A lsens2018-3-3] our project ID - read up on it and keep as is
 
-5.[#SBATCH -o] the out file of your job (%j adds the job ID to this file)
+5.[#SBATCH -J] the name of your job
 
-6.[#SBATCH -e] the error file of you job
+6.[#SBATCH -o] the out file of your job (%j adds the job ID to this file)
+
+7.[#SBATCH -e] the error file of you job
 
 
 After this come the lines that load the SLURM modules you want to load.

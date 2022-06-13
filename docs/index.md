@@ -1,27 +1,67 @@
-# Aurora documentation from Bioinformaticians for Bioinformaticians
+# Instructions for Bioinformaticians using the Lund Stem Cell Center LS2 compute platform.
 
-Please read this before you use the aurora-ls2 system!
+Congratulations, you have been deemed worthy enough to be granted access to LS2.
 
-## Data - where to put data / scripts / results ?
+In order to keep the system orderly we have set out some guidelines which everyone should follow to maintain a smoothly running platform. Please read this document *carefully* before you use the system.
 
-Backup is very expensive for us as we need to buy more hardware to back things up.
-Therefore we try to minimize the amount of data that needs to get backed up.
+## Getting access to LS2
 
-What we think is necessary to be backed up is:
+LS2 is a secure system where we handle human sequence data under GDPR rules, therefore there are a few steps involved to get access.
 
-1. Your raw data - this (and ONLY this) should go to /projects/fs5/\<username\>
+The first thing you need to do is make an account at [SUPR](https://supr.snic.se/). Once done, contact [Shamit Soneji](shamit.soneji@med.lu.se) stating which SCC lab you belong to. You will then be added to the list of users, after which, you will log back in to SUPR and apply for an account at LUNARC.
+
+They will send you a user agreement that you will need to print, sign, scan, and then send a PDF of it to Shamit for counter-signing. Someone from LUNARC will then contact you with your password.
+
+In the meantime you need to contact [LDC](servicedesk@lu.se) and get a fixed IP address for your network port and VPN. When you have this, email it to Shamit for communicaton to LUNARC.
+
+LUNARC also uses two-factor authentication using Pocket Pass. Follow the instructions [here](https://lunarc-documentation.readthedocs.io/en/latest/authenticator_howto/) to set this up. 
+
+## Connecting to Aurora
+
+The server address is aurora-ls2.lunarc.lu.se. You can connect using a terminal:
+
+```
+ssh <username>@aurora-ls2.lunarc.lu.se
+```
+It will ask for your password, and then your two-factor code from your Pocket Pass.
+
+ You can also connect using Thinlinc which gives you a full Linux desktop. Follow the instuctions [here](https://lunarc-documentation.readthedocs.io/en/latest/using_hpc_desktop/) to use that. 
+
+## Data - where to put my data/scripts/results?
+
+LS2 has four primary drives fs1, fs3, fs5 and fs7 found at:
+
+
+/projects/fs1/\<username\>
+
+/projects/fs3/\<username\>
+
+/projects/fs5/\<username\>
+
+/projects/fs7/\<username\>
+
+
+Each of these drives are mirrored nightly to a unit of the same size. No snapshots are stored, this is merely to protect against mechanical failure.
+
+These drives should be used in a certain way, and this is how:
+
+1. **Raw data** - this (and ONLY this) should go to /projects/**fs5**/\<username\>
     Raw data are e.g. fastq files (gzipped!!) or raw read folders.
 
-2. Your scripts - this is where all your work time got invested!
-    They should be stored in your home directory as this is also updated.
+2. **Processed data** (BAMS, counts etc) should be directed to either **fs1** or **fs3** depending on which one you were assigned to when given access. Intermediate files such as SAM files etc should be removed to save space.
 
-That is not much -right? So where will all the intermediate data files end up?
+3. Raw data that has been published should be *moved* to **fs7** for achive.
 
-Files that are reproducible (as your scripts do no random sampling or something like that) or even temporary should
-be put on a not backed up disk. Ideally you should save them on the calculation nodes in a folder on the node.
-The slurm system is set up to give you a tempoorary folder on the nodes for each SLURM job you start. The name of your temporary folder is stored in the $SNIC_TMP [environment variable](https://linuxize.com/post/how-to-set-and-list-environment-variables-in-linux/). This variable does not exist on the frontend. The folder on the node is private to you and will be deleted once the job is finished. So in the last step of your script you need to save your results to the NAS.
+4. Scripts should be stored on fs1/fs3.
 
-Even these results should not be backed up (if they can be reproduced - try it if you are unsure). Hence they should also be stored on a not backed up NAS.
+
+<That is not much -right? So where will all the intermediate data files end up?>
+
+<Files that are reproducible (as your scripts do no random sampling or something like that) or even temporary should
+be put on a not backed up disk. Ideally you should save them on the calculation nodes in a folder on the node.>
+The slurm system is set up to give you a temporary folder on the odes for each slurm job you start. The name of your temporary folder is stored in the $SNIC_TMP [environment variable](https://linuxize.com/post/how-to-set-and-list-environment-variables-in-linux/). This variable does not exist on the frontend. The folder on the node is private to you and will be deleted once the job is finished. So in the last step of your script you need to save your results.
+
+<Even these results should not be backed up (if they can be reproduced - try it if you are unsure). Hence they should also be stored on a not backed up nas.>
 
 I strongly recommend [to create soft links](https://www.cyberciti.biz/faq/creating-soft-link-or-symbolic-link/) to the main data folder that you use. I for example have two links - one for the main data storage accessible under "\~/NAS/" and one for the primary data storage under "\~/DATA":
 ```
@@ -110,5 +150,4 @@ R and Python are the languages most of the bioinformatic packages are implemente
 In other words - BACK THEM UP ;-)
 
 I recommend to use the [Python notebooks](https://jupyter.org/) to interact with both R and Python. With aurora-ls2 being a secure no-internet system installing packages for both languages is a pain. Therfore I have focused on Singularity to package up the most used packages in both R and Python and provide them as [a Jupyter enabled singularity image called SingSingCell](pdfs/HowToUseSingularityOnLsens2.pdf).
-
 

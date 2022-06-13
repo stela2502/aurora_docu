@@ -8,11 +8,11 @@ In order to keep the system orderly we have set out some guidelines which everyo
 
 LS2 is a secure system where we handle human sequence data under GDPR rules, therefore there are a few steps involved to get access.
 
-The first thing you need to do is make an account at [SUPR](https://supr.snic.se/). Once done, contact [Shamit Soneji](shamit.soneji@med.lu.se) stating which SCC lab you belong to. You will then be added to the list of users, after which, you will log back in to SUPR and apply for an account at LUNARC.
+The first thing you need to do is make an account at [SUPR](https://supr.snic.se/). Once done, contact Shamit Soneji (<shamit.soneji@med.lu.se>) stating which SCC lab you belong to. You will then be added to the list of users, after which, you will log back in to SUPR and apply for an account at LUNARC.
 
 They will send you a user agreement that you will need to print, sign, scan, and then send a PDF of it to Shamit for counter-signing. Someone from LUNARC will then contact you with your password.
 
-In the meantime you need to contact [LDC](servicedesk@lu.se) and get a fixed IP address for your network port and VPN. When you have this, email it to Shamit for communicaton to LUNARC.
+In the meantime you need to contact LDC (<servicedesk@lu.se>) and get a fixed IP address for your network port and VPN. When you have this, email it to Shamit for communicaton to LUNARC.
 
 LUNARC also uses two-factor authentication using Pocket Pass. Follow the instructions [here](https://lunarc-documentation.readthedocs.io/en/latest/authenticator_howto/) to set this up. 
 
